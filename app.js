@@ -61,7 +61,7 @@ app.use((error, req, res, next) => {
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect("") // add a link
+  .connect("mongodb+srv://ulasdeniz:ulasdeniz@graduation-project.bhwmkhv.mongodb.net/?retryWrites=true&w=majority")
   .then((result) => {
     console.log('Connected!!!');
     app.listen(8080);
