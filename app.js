@@ -5,8 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
 
-const postRoutes = require("./routes/post");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
+const chatRoutes = require("./routes/chat");
 
 const app = express();
 
@@ -47,8 +49,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/post", postRoutes);
 app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/post", postRoutes);
+app.use("/chat", chatRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
