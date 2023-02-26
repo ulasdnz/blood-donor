@@ -7,11 +7,10 @@ const authorizationCheck =
 
 const router = express.Router();
 
-//!! Everyone can access the published posts.
 router.get("/", postController.getPosts);
 router.get("/:postId", postController.getPost);
 
-//!! User operations
+
 router.post(
   "/",
   [body("message").trim().isLength({ min: 10 })],
