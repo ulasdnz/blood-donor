@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Chat = require("./chat");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -75,7 +76,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.methods.removeFromChats = (chatID) => {
+userSchema.methods.removeFromChats = function (chatID) {
   const updatedChat = this.chats.filter(
     (chat) => chat.chatId.toString() !== chatID.toString()
   );
@@ -83,9 +84,26 @@ userSchema.methods.removeFromChats = (chatID) => {
   return this.save();
 };
 
-userSchema.methods.deleteAllChats = () => {
+userSchema.methods.deleteAllChats = function () {
   this.chats = [];
   return this.save();
 };
+
+userSchema.pre("save", function(){
+  console.log('dondurma');
+  console.log(this._id);
+})
+
+userSchema.post("deleteOne", { document: true }, async function () {
+  // second way of accessing this value of the current deleted element:
+  //const user = await this.model.findOne(this.getQuery());
+  //console.log(user._id);
+
+  const result = await Chat.deleteMany({members:{$in:[this._id]}});
+  if(!result || result.deletedCount <1 ){
+    const error = new Error("User could not be deleted.");
+    throw error;
+  }
+});
 
 module.exports = mongoose.model("User", userSchema);
