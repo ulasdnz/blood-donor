@@ -2,7 +2,6 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/user");
-const Chat = require("../models/chat");
 
 exports.updatePassword = (req, res, next) => {
   const errors = validationResult(req);

@@ -89,10 +89,6 @@ userSchema.methods.deleteAllChats = function () {
   return this.save();
 };
 
-userSchema.pre("save", function(){
-  console.log('dondurma');
-  console.log(this._id);
-})
 
 userSchema.post("deleteOne", { document: true }, async function () {
   // second way of accessing this value of the current deleted element:
