@@ -54,7 +54,7 @@ app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 app.use("/chat", chatRoutes);
 
-app.use((error, req, res, next) => {
+app.use((error, _req, res, _next) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
@@ -66,8 +66,9 @@ mongoose.set("strictQuery", true);
 
 mongoose
   .connect("mongodb+srv://ulasdeniz:ulasdeniz@graduation-project.bhwmkhv.mongodb.net/?retryWrites=true&w=majority")
-  .then((result) => {
+  .then((_result) => {
+    const port = process.env.PORT || 8080
     console.log('Connected!!!');
-    app.listen(8080);
+    app.listen(port);
   })
   .catch((err) => console.log(err));
