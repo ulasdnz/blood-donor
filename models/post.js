@@ -11,24 +11,24 @@ const postSchema = new Schema(
     location: {
       city: {
         type: String,
-        required: [true, "A city name must be provided."],
+        required: [true, "Şehir ismini belirtmelisiniz."],
       },
       district: {
         type: String,
-        required: [true, "A district name must be provided."],
+        required: [true, "İlçe ismini belirtmelisiniz."],
       },
     },
     bloodType: {
       type: String,
-      required: [true, "A blood type must be provided."],
+      required: [true, "Kan grubunu belirtmelisiniz."],
       enum: {
         values: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
-        message: "Blood type is either: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
+        message: "Seçebileceğiniz kan grupları: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
       },
     },
     message: {
       type: String,
-      required: [true, "A post must have a message."],
+      required: [true, "İlan bir mesaj içermeli."],
     },
   },
   { timestamps: true }

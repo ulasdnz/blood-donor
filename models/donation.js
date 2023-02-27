@@ -8,9 +8,9 @@ const donationSchema = new Schema({
   },
   rate: {
     type: Number,
-    min:[1, "Rating must be above 1"],
-    max:[5, "Rating must be below 5"],
-    required: [true, "You should rate the user."]
+    min:[1, "Puan 1 ve 5 arasında bir sayı olmalı."],
+    max:[5, "Puan 1 ve 5 arasında bir sayı olmalı"],
+    required: [true, "Kullanıcıya puan vermelisiniz."]
   },
   from: {
     type: Schema.Types.ObjectId,
@@ -25,19 +25,19 @@ const donationSchema = new Schema({
   location: {
     city: {
       type: String,
-      required: [true, "A city name must be provided."],
+      required: [true, "Şehir ismini belirtmelisiniz."],
     },
     district: {
       type: String,
-      required: [true, "A district name must be provided."],
+      required: [true, "İlçe ismini belirtmelisiniz."],
     },
   },
   bloodType: {
     type: String,
-    required: [true, "A blood type must be provided."],
+    required: [true, "Kan grubunu belirtmelisiniz."],
     enum: {
       values: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
-      message: "Blood type is either: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
+      message: "Seçebileceğiniz kan grupları: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
     },
   },
 });

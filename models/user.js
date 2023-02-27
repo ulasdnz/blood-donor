@@ -6,58 +6,58 @@ const userSchema = new Schema(
   {
     email: {
       type: String,
-      required: [true, "A user must have a e-mail!"],
+      required: [true, "E-posta adresini giriniz."],
       unique: true,
       trim: true,
     },
     name: {
       type: String,
-      required: [true, "A user must have name."],
+      required: [true, "Kullanıcı ismini giriniz."],
       trim: true,
     },
     surname: {
       type: String,
-      required: [true, "A user must have surname."],
+      required: [true, "Kullanıcı soy ismini giriniz."],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "A user must have password."],
+      required: [true, "Kullanıcı bir şifreye sahip olmalıdır."],
       trim: true,
     },
     image: String,
     bloodType: {
       type: String,
-      required: [true, "A blood type must be provided."],
+      required: [true, "Kan grubunu belirtmelisiniz."],
       enum: {
         values: ["0-", "0+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
-        message: "Blood type is either: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
+        message: "Seçebileceğiniz kan grupları: 0-, 0+, A-, A+, B-, B+, AB-, AB+",
       },
       trim: true,
     },
     location: {
       city: {
         type: String,
-        required: [true, "A city name must be provided."],
+        required: [true, "Şehir ismini belirtmelisiniz."],
         trim: true,
       },
       district: {
         type: String,
-        required: [true, "A district name must be provided."],
+        required: [true, "İlçe ismini belirtmelisiniz."],
         trim: true,
       },
     },
     dateOfBirth: {
       type: Date,
-      required: [true, "A user must have a birth date."],
+      required: [true, "Doğum tarihini belirtiniz."],
     },
     lastDonation: {
       type: Date,
-      required: [true, "A user must have a birth date."],
+      required: [true, "En son kan bağışı yaptığınız tarihi belirtiniz."],
     },
     phone: {
       type: String,
-      required: [true, "A user must have a phone number!"],
+      required: [true, "Telefon numaranızı giriniz."],
       trim: true,
     },
     chats: [
@@ -97,7 +97,7 @@ userSchema.post("deleteOne", { document: true }, async function () {
 
   const result = await Chat.deleteMany({members:{$in:[this._id]}});
   if(!result || result.deletedCount <1 ){
-    const error = new Error("User could not be deleted.");
+    const error = new Error("Kullanıcı silinemedi.");
     throw error;
   }
 });

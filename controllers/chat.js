@@ -1,14 +1,6 @@
-const { validationResult } = require("express-validator");
-
 const Chat = require("../models/chat");
 
 exports.sendMessage = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    const error = new Error("Validation failed, entered data is incorrect.");
-    error.statusCode = 422;
-    throw error;
-  }
   const userId = req.loggedUserId;
   const message = req.body.message;
   const messageTo = req.body.messageTo;
@@ -29,7 +21,7 @@ exports.sendMessage = (req, res, next) => {
     })
     .then((result) => {
       res.status(200).json({
-        message: "Message send successfully!",
+        message: "Mesaj gönderildi!",
         chat: result,
       });
     })

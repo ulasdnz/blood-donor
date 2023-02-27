@@ -18,7 +18,7 @@ const chatSchema = new Schema(
         },
         content: {
           type: String,
-          required: [true, "Content must be provided."],
+          required: [true, "Mesaj boş olamaz."],
         },
         from: {
           type: Schema.Types.ObjectId,
