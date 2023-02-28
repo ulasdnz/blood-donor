@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -34,6 +34,12 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
-
+postSchema.pre(/^find/, function(next){
+  this.populate({
+    path: "user",
+    select: "name surname dateOfBirth"
+  })
+  next()
+})
 
 module.exports = mongoose.model("Post", postSchema);

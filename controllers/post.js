@@ -51,7 +51,7 @@ exports.createPost = (req, res, next) => {
   const bloodType = req.body.bloodType;
   const message = req.body.message;
   const post = new Post({
-    userId,
+    user: userId,
     location,
     bloodType,
     message,
@@ -86,7 +86,7 @@ exports.updatePost = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
-      if (post.userId.toString() !== userId.toString()) {
+      if (post.user._id.toString() !== userId.toString()) {
         const error = new Error("Bu ilan size ait değil!");
         error.statusCode = 403;
         throw error;
@@ -119,17 +119,16 @@ exports.deletePost = (req, res, next) => {
       }
 
       //!! Check logged in user
-      if (loggedUserId !== post.userId.toString()) {
+      if (loggedUserId !== post.user._id.toString()) {
         const error = new Error("Bu ilan size ait değil!");
         error.statusCode = 401;
         throw error;
       }
       return Post.findByIdAndRemove(postId);
     })
-    .then((result) => {
-      console.log(result);
-      res.status(200).json({ message: "İlan başarıyla silindi." });
-    })
+    .then((_result) => 
+      res.status(200).json({ message: "İlan başarıyla silindi." })
+    )
     .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
