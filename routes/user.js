@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   "/password",
   [
-    body("password")
+    body("newPassword")
       .isLength({ min: 6 })
       .withMessage("Şifre en az 6 karakter uzunluğunda olmalıdır."),
   ],

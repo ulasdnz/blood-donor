@@ -12,35 +12,38 @@ exports.updatePassword = (req, res, next) => {
     throw error;
   }
   const userId = req.loggedUserId;
-  const password = req.body.password;
+  const oldPassword = req.body.oldPassword;
+  const password = req.body.newPassword;
+  let userDoc = null
 
-  bcrypt
+  User.findOne({ _id: userId}).then(user=>{
+    userDoc = user
+    return bcrypt.compare(oldPassword, user.password)
+  }).then(isEqual => {
+    if (!isEqual) {
+      const error = new Error('Mevcut şifre hatalı!');
+      error.statusCode = 401;
+      throw error;
+    }
+    bcrypt
     .hash(password, 12)
     .then((hashedPw) => {
-      User.findOne({ _id: userId })
-        .then((user) => {
-          if (!user) {
-            const error = new Error(
-              "Bu e-postaya sahip bir kullanıcı bulunamadı."
-            );
-            error.statusCode = 401;
-            throw error;
-          }
-          user.password = hashedPw;
-          return user.save();
-        })
-        .then((result) => {
-          res
-            .status(200)
-            .json({ message: "Şifre değiştirildi!", user: result });
-        });
+      userDoc.password = hashedPw
+      return userDoc.save()
     })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+    .then((result) => {
+      res
+        .status(200)
+        .json({ message: "Şifre değiştirildi!", user: result });
     });
+  })
+  .catch(err => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  });
+
 };
 
 exports.updatePhone = (req, res, next) => {
