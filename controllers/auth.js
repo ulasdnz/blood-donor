@@ -62,7 +62,7 @@ exports.login = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        const error = new Error('Bu e-postaya sahip bir kullanıcı bulunamadı.');
+        const error = new Error('E-posta veya şifre yanlış!');
         error.statusCode = 401;
         throw error; 
       }
@@ -71,7 +71,7 @@ exports.login = (req, res, next) => {
     })
     .then(isEqual => {
       if (!isEqual) {
-        const error = new Error('Yanlış şifre!');
+        const error = new Error('E-posta veya şifre yanlış!');
         error.statusCode = 401;
         throw error;
       }
