@@ -47,13 +47,19 @@ exports.getPost = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
   const userId = req.loggedUserId;
+  const patientName = req.body.patientName;
+  const patientSurname = req.body.patientSurname;
+  const patientAge = req.body.patientAge;
+  const patientBloodType = req.body.patientBloodType;
   const location = req.body.location;
-  const bloodType = req.body.bloodType;
   const message = req.body.message;
   const post = new Post({
     user: userId,
+    patientName,
+    patientSurname,
+    patientAge,
+    patientBloodType,
     location,
-    bloodType,
     message,
   });
   post
@@ -71,6 +77,28 @@ exports.createPost = (req, res, next) => {
       next(err);
     });
 };
+
+exports.reply = async (req, res, next) => {
+  const userId = req.loggedUserId;
+  const postId = req.body.postId;
+  const comment = req.body.comment;
+
+  const post = await Post.findById(postId)
+  if (!post) {
+    const error = new Error("Bu id'ye ait bir ilan bulunamadı.");
+    error.statusCode = 404;
+    return next(error);
+  }
+  const replies = [...post.replies, {from: userId, content: comment}]
+  post.replies = replies;
+  try{
+    const result = await post.save()
+    return res.status(200).json({ message: "Reply edildi!", post: result });
+  }catch(err){
+    err.statusCode = 500;
+    next(err);
+  }
+}
 
 exports.updatePost = (req, res, next) => {
   const postId = req.params.postId;

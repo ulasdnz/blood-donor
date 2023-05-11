@@ -46,6 +46,24 @@ exports.updatePassword = (req, res, next) => {
 
 };
 
+exports.updateLocation = async (req, res, next) =>{
+  const userId = req.loggedUserId;
+  const newLocation = req.body.newLocation;
+
+  const user = await User.findById(userId);
+  user.location = newLocation;
+  try{
+    const result = await user.save()
+    return res
+    .status(200)
+    .json({ message: "Lokasyonunuz değişti!", user: result });
+  }catch(err){
+    err.statusCode = 500;
+    next(err);
+  }
+
+}
+
 exports.updatePhone = (req, res, next) => {
   const userId = req.loggedUserId;
   const newPhoneNumber = req.body.phoneNumber;

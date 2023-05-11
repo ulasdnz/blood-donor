@@ -13,6 +13,10 @@ router.post(
   isAuth,
   postController.createPost
 );
+router.post("/reply",
+isAuth,
+postController.reply
+)
 
 router.put(
   "/:postId",

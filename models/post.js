@@ -8,6 +8,20 @@ const postSchema = new Schema(
       ref: "User",
       required: true,
     },
+    patientName:{
+      type: String,
+      required: [true, "Hastanın ismini giriniz."]
+    },
+    patientSurname:{
+      type: String,
+      required: [true, "Hastanın soyadını giriniz."]
+    },
+    patientAge:{
+      type: Number,
+      min:[0, "Yaş en az 0 olabilir."],
+      max:[150, "Yaş en fazla 150 olabilir."],
+      required: [true, "Hastanın yaşını giriniz."]
+    },
     location: {
       city: {
         type: String,
@@ -18,7 +32,7 @@ const postSchema = new Schema(
         required: [true, "İlçe ismini belirtmelisiniz."],
       },
     },
-    bloodType: {
+    patientBloodType: {
       type: String,
       required: [true, "Kan grubunu belirtmelisiniz."],
       enum: {
@@ -30,15 +44,39 @@ const postSchema = new Schema(
       type: String,
       required: [true, "İlan bir mesaj içermeli."],
     },
+    replies: [{
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
+      content: {
+        type: String,
+        required: [true, "Mesaj boş olamaz."],
+      },
+      from: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      }
+    }]
   },
   { timestamps: true }
 );
 
 postSchema.pre(/^find/, function(next){
-  this.populate({
+  this.populate([{
     path: "user",
-    select: "name surname dateOfBirth"
-  })
+    select: "name surname dateOfBirth phone"
+  },
+  {
+    path: "replies",
+    populate:{
+      path: "from",
+      select: "name surname bloodType dateOfBirth"
+    },
+  }
+])
+
   next()
 })
 
