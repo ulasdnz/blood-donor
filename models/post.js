@@ -76,8 +76,27 @@ postSchema.pre(/^find/, function(next){
     },
   }
 ])
-
   next()
 })
+
+
+postSchema.post('save', function(doc, next) {
+  if(doc.replies?.length>0){
+    doc.populate({
+      path: "replies.from",
+      select: "name surname bloodType dateOfBirth"
+    }).then(function() {
+      next();
+    });
+  }else{
+    doc.populate({
+      path: "user",
+      select: "name surname dateOfBirth phone"
+    }).then(function() {
+      next();
+    });
+  }
+
+});
 
 module.exports = mongoose.model("Post", postSchema);
