@@ -89,7 +89,7 @@ exports.reply = async (req, res, next) => {
     error.statusCode = 404;
     return next(error);
   }
-  const replies = [{from: userId, content: comment}, ...post.replies]
+  const replies = [...post.replies, {from: userId, content: comment}]
   post.replies = replies;
   try{
     const result = await post.save()
