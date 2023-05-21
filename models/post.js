@@ -66,7 +66,7 @@ const postSchema = new Schema(
 postSchema.pre(/^find/, function(next){
   this.populate([{
     path: "user",
-    select: "name surname dateOfBirth phone"
+    select: "name surname dateOfBirth phone notificationToken"
   },
   {
     path: "replies",
@@ -84,7 +84,7 @@ postSchema.post('save', function(doc, next) {
   if(doc.replies?.length>0){
     doc.populate({
       path: "replies.from",
-      select: "name surname bloodType dateOfBirth"
+      select: "name surname bloodType dateOfBirth notificationToken"
     }).then(function() {
       next();
     });
