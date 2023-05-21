@@ -55,6 +55,10 @@ const userSchema = new Schema(
       type: Date,
       required: [true, "En son kan bağışı yaptığınız tarihi belirtiniz."],
     },
+    notificationToken: {
+      type: String,
+      trim: true
+    },
     phone: {
       type: String,
       required: [true, "Telefon numaranızı giriniz."],

@@ -19,6 +19,7 @@ router.post(
 
 router.post("/phone", isAuth, userController.updatePhone);
 router.post("/location", isAuth, userController.updateLocation)
+router.post("/notificationToken", isAuth, userController.notificationToken)
 
 router.delete("/", isAuth, userController.deleteUser);
 

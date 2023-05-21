@@ -86,6 +86,28 @@ exports.updatePhone = (req, res, next) => {
     });
 };
 
+
+exports.notificationToken = async (req, res, next) => {
+  const userId = req.loggedUserId;
+  const notificationToken = req.body.notificationToken
+  const user = await User.findOne({_id: userId})
+  if (!user) {
+    const error = new Error("Böyle bir kullanıcı yok!");
+    error.statusCode = 404
+    return next(err);
+  }
+  user.notificationToken = notificationToken
+  try{
+    const result = await user.save()
+    return res
+    .status(200)
+    .json({ message: "notificationToken kaydedildi!", user: result });
+  }catch(err){
+    err.statusCode = 500;
+    next(err);
+  }
+}
+
 exports.deleteUser = (req, res, next) => {
   const userId = req.loggedUserId;
 
@@ -111,3 +133,4 @@ exports.deleteUser = (req, res, next) => {
       next(err);
     });
 };
+
