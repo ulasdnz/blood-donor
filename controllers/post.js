@@ -1,5 +1,13 @@
 const Post = require("../models/post");
 
+exports.getMyPosts = async (req, res, _next) => {
+  const userId = req.loggedUserId;
+  console.log(userId)
+  const posts = await Post.find({ user: userId });
+  return res.status(200).json({ posts });
+};
+
+
 exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 10;
@@ -83,22 +91,22 @@ exports.reply = async (req, res, next) => {
   const postId = req.body.postId;
   const comment = req.body.comment;
 
-  const post = await Post.findById(postId)
+  const post = await Post.findById(postId);
   if (!post) {
     const error = new Error("Bu id'ye ait bir ilan bulunamadı.");
     error.statusCode = 404;
     return next(error);
   }
-  const replies = [...post.replies, {from: userId, content: comment}]
+  const replies = [...post.replies, { from: userId, content: comment }];
   post.replies = replies;
-  try{
-    const result = await post.save()
+  try {
+    const result = await post.save();
     return res.status(200).json({ message: "Reply edildi!", post: result });
-  }catch(err){
+  } catch (err) {
     err.statusCode = 500;
     next(err);
   }
-}
+};
 
 exports.updatePost = (req, res, next) => {
   const postId = req.params.postId;
@@ -154,7 +162,7 @@ exports.deletePost = (req, res, next) => {
       }
       return Post.findByIdAndRemove(postId);
     })
-    .then((_result) => 
+    .then((_result) =>
       res.status(200).json({ message: "İlan başarıyla silindi." })
     )
     .catch((err) => {
