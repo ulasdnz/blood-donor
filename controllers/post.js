@@ -2,11 +2,10 @@ const Post = require("../models/post");
 
 exports.getMyPosts = async (req, res, _next) => {
   const userId = req.loggedUserId;
-  console.log(userId)
+  console.log(userId);
   const posts = await Post.find({ user: userId });
   return res.status(200).json({ posts });
 };
-
 
 exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -102,6 +101,17 @@ exports.reply = async (req, res, next) => {
   try {
     const result = await post.save();
     return res.status(200).json({ message: "Reply edildi!", post: result });
+  } catch (err) {
+    err.statusCode = 500;
+    next(err);
+  }
+};
+
+exports.fetchByCity = async (req, res, next) => {
+  const city = req.params.city;
+  try {
+    const posts = await Post.find({ "location.city": city });
+    return res.status(200).json({ posts });
   } catch (err) {
     err.statusCode = 500;
     next(err);

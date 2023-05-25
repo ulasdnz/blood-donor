@@ -6,6 +6,7 @@ const isAuth = require("../controllers/isAuth.js");
 const router = express.Router();
 
 router.get("/myPosts", isAuth, postController.getMyPosts);
+router.get("/location/:city", postController.fetchByCity);
 router.get("/:postId", postController.getPost);
 router.get("/", postController.getPosts);
 
