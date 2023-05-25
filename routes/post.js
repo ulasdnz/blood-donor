@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/myPosts", isAuth, postController.getMyPosts);
 router.get("/location/:city", postController.fetchByCity);
+router.get("/location/", postController.fetchByLocation);
 router.get("/:postId", postController.getPost);
 router.get("/", postController.getPosts);
 
