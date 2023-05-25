@@ -6,6 +6,8 @@ const isAuth = require("../controllers/isAuth.js");
 
 const router = express.Router();
 
+router.get('/notificationToken/:city/:district', userController.fetchNotificationTokensByLocation)
+
 router.post(
   "/password",
   [
