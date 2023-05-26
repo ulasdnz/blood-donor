@@ -1,4 +1,3 @@
-const { find } = require("../models/chat");
 const Post = require("../models/post");
 
 exports.getMyPosts = async (req, res, _next) => {

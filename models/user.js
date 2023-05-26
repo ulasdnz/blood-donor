@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Chat = require("./chat");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -63,47 +62,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Telefon numaranızı giriniz."],
       trim: true,
-    },
-    chats: [
-      {
-        userId: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
-        chatId: {
-          type: Schema.Types.ObjectId,
-          ref: "Chat",
-        },
-      },
-    ],
+    }
   },
   { timestamps: true }
 );
 
-userSchema.methods.removeFromChats = function (chatID) {
-  const updatedChat = this.chats.filter(
-    (chat) => chat.chatId.toString() !== chatID.toString()
-  );
-  this.chats = updatedChat;
-  return this.save();
-};
-
-userSchema.methods.deleteAllChats = function () {
-  this.chats = [];
-  return this.save();
-};
-
-
-userSchema.post("deleteOne", { document: true }, async function () {
-  // second way of accessing this value of the current deleted element:
-  //const user = await this.model.findOne(this.getQuery());
-  //console.log(user._id);
-
-  const result = await Chat.deleteMany({members:{$in:[this._id]}});
-  if(!result || result.deletedCount <1 ){
-    const error = new Error("Kullanıcı silinemedi.");
-    throw error;
-  }
-});
 
 module.exports = mongoose.model("User", userSchema);
