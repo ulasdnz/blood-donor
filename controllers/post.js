@@ -114,7 +114,7 @@ exports.fetchByLocation = async (req, res, next) => {
       "location.city": city,
       "location.district": district,
     });
-    return res.status(200).json({ posts });
+    return res.status(200).json({ posts }).sort({"createdAt": -1});
   } catch (err) {
     err.statusCode = 500;
     next(err);
@@ -125,7 +125,7 @@ exports.fetchByCity = async (req, res, next) => {
   const city = req.params.city;
   try {
     const posts = await Post.find({ "location.city": city });
-    return res.status(200).json({ posts });
+    return res.status(200).json({ posts }).sort({"createdAt": -1});
   } catch (err) {
     err.statusCode = 500;
     next(err);
