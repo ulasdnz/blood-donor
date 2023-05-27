@@ -9,7 +9,7 @@ exports.getMyPosts = async (req, res, _next) => {
 
 exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
-  const perPage = 10;
+  const perPage = 50;
   let totalItems;
   Post.find()
     .countDocuments()
@@ -17,7 +17,7 @@ exports.getPosts = (req, res, next) => {
       totalItems = count;
       return Post.find()
         .skip((currentPage - 1) * perPage)
-        .limit(perPage);
+        .limit(perPage).sort({"createdAt": -1})
     })
     .then((posts) => {
       res.status(200).json({
