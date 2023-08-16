@@ -43,7 +43,7 @@ exports.signup = (req, res, next) => {
           email: result.email,
           userId: result._id.toString()
         },
-        'somesupersecretsecret'
+        process.env.TOKENSECRET
       );
       res.status(201).json({ message: 'Kullanıcı oluşturuldu!', token, user: result });
     })
@@ -80,7 +80,7 @@ exports.login = (req, res, next) => {
           email: loadedUser.email,
           userId: loadedUser._id.toString()
         },
-        'somesupersecretsecret'
+        process.env.TOKENSECRET
       );
       res.status(200).json({ token: token, user: loadedUser });
     })
