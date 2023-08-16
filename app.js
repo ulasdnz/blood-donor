@@ -64,7 +64,7 @@ app.use((error, _req, res, _next) => {
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect("mongodb+srv://ulasdeniz:ulasdeniz@graduation-project.bhwmkhv.mongodb.net/?retryWrites=true&w=majority")
+  .connect(process.env.MONGODB_URI)
   .then((_result) => {
     const port = process.env.PORT || 8080
     console.log('Connected!!!');
